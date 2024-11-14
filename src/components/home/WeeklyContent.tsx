@@ -1,40 +1,51 @@
-import { CardContent } from "../ui/card"
+interface WeatherInfo {
+  maxTemp: number;
+  minTemp: number;
+  date: string;
+  iconCode: string;
+  isDay: boolean;
+}
 
 interface Props {
-    highTemp: number,
-    lowTemp: number,
-    date: string,
-    day: string
-  }
-  
-function WeeklyContent({highTemp, lowTemp, date, day}:Props) {
+  data: WeatherInfo;
+}
+
+function WeeklyContent({ data }: Props) {
   return (
-    <CardContent className="flex flex-col gap-1">
       <div className="w-full flex items-center gap-7 bg-neutral-50 py-0 px-3 rounded-sm">
         <div className="w-fit h-10 flex items-center gap-2">
-          <img src="src/assets/icons/1000d.svg" className="h-7 w-7" />
+          {data.isDay ? (
+            <img
+              src={`src/assets/icons/${data.iconCode}d.svg`}
+              className="h-7 w-7"
+            />
+          ) : (
+            <img
+              src={`src/assets/icons/${data.iconCode}n.svg`}
+              className="h-7 w-7"
+            />
+          )}
           <div className="flex items-center gap-1 w-20">
             <div className="w-full h-full flex items-start gap-[2px]">
               <span className="poppins-medium scroll-m-20 text-lg font-semibold tracking-tight text-red-600">
-                {highTemp}
+                {data.maxTemp}
               </span>
-              <span className="text-xs font-normal mt-1">&#8451;</span>
+              <span className="text-xs font-normal mt-[3px]">&#8451;</span>
             </div>
             <div className="w-full h-full flex items-start gap-[2px]">
               <span className="poppins-medium scroll-m-20 text-lg font-semibold tracking-tight text-sky-600">
-                {lowTemp}
+                {data.minTemp}
               </span>
-              <span className="text-xs font-normal mt-1">&#8451;</span>
+              <span className="text-xs font-normal mt-[3px]">&#8451;</span>
             </div>
           </div>
         </div>
         <div className="flex-1 flex items-center justify-end gap-5 mb-1">
-          <small className="text-sm leading-none">{date}</small>
-          <small className="text-sm leading-none">{day}</small>
+          <small className="text-sm leading-none">{data.date}</small>
+          <small className="text-sm leading-none">일요일</small>
         </div>
       </div>
-    </CardContent>
   );
 }
 
-export{ WeeklyContent };
+export { WeeklyContent };
