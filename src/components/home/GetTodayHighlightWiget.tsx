@@ -9,6 +9,12 @@ import {
 } from '@/components';
 
 function GetTodayHighlightWiget() {
+  const datas = [
+    {title: '습도', desc: 'Huminity', imgUrl: 'src/assets/icons/Humidity.svg', num:64, unit: '%'},
+    {title: '기압', desc: 'Pressure', imgUrl:'src/assets/icons/Wind.svg', num: 1024, unit: 'hPa'},
+    {title: '가시거리', desc: 'visiablity', imgUrl: 'src/assets/icons/Fog.svg',num: 64, unit: '%'},
+    {title: '체감온도', desc: 'Feels like',imgUrl: 'src/assets/icons/Hot.svg', num: 19, unit: `&#8451;`}
+  ];
   return (
     <Card className="flex-1">
       <CardHeader>
@@ -72,34 +78,16 @@ function GetTodayHighlightWiget() {
           </Card>
         </div>
         <div className="w-full grid grid-cols-4 gap-5">
-          <GetExtraWiget
-            title={'습도'}
-            desc={'Huminity'}
-            imgUrl={'src/assets/icons/Humidity.svg'}
-            num={64}
-            unit={'%'}
-          />
-          <GetExtraWiget
-            title={'기압'}
-            desc={'Pressure'}
-            imgUrl={'src/assets/icons/Wind.svg'}
-            num={1024}
-            unit={'hPa'}
-          />
-          <GetExtraWiget
-            title={'가시거리'}
-            desc={'visiablity'}
-            imgUrl={'src/assets/icons/Fog.svg'}
-            num={64}
-            unit={'%'}
-          />
-          <GetExtraWiget
-            title={'체감온도'}
-            desc={'Feels like'}
-            imgUrl={'src/assets/icons/Hot.svg'}
-            num={19}
-            unit={`&#8451;`}
-          />
+          {datas.map((data)=>(
+            <GetExtraWiget
+            key={data.title}
+            title={data.title}
+            desc={data.desc}
+            imgUrl={data.imgUrl}
+            num={data.num}
+            unit={data.unit}
+            />
+          ))}
         </div>
       </CardContent>
     </Card>
