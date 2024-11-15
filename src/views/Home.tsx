@@ -9,10 +9,11 @@ import {
 } from '@/components'; //index.ts를 통해 관리
 import axios from 'axios';
 import { Weather, ForecastTideDay, ForecastDay } from '@/types';
+import { useAtom } from 'jotai';
+import { cityNameAtom } from '@/stores';
 
 const API_KEY = '1074e7f79975413996e05050241411';
 const BASE_URL = 'http://api.weatherapi.com/v1';
-
 
 const defaultWeatherData: Weather = {
   current: {
@@ -103,6 +104,10 @@ const defaultTideData: ForecastTideDay = {
 };
 
 function HomePage() {
+  const [cityName , setCityName] = useAtom(cityNameAtom);
+  
+
+
   const [weatherData, setWeatherData] = useState<Weather>(defaultWeatherData);
   const [tideData, setTideData] = useState<ForecastTideDay>(defaultTideData);
   const [oneWeekWeatherSummary, setOneWeekWeatherSummary] = useState([]);
@@ -110,7 +115,7 @@ function HomePage() {
   const fetchApi = async () => {
     try {
       const res = await axios.get(
-        `${BASE_URL}/forecast.json?q=seoul&key=${API_KEY}`
+        `${BASE_URL}/forecast.json?q=${cityName}&key=${API_KEY}`
       );
       console.log(res);
 
@@ -127,7 +132,7 @@ function HomePage() {
   const fetchTideApi = async () => {
     try {
       const res = await axios.get(
-        `${BASE_URL}/marine.json?key=${API_KEY}&q=seoul&days=1`
+        `${BASE_URL}/marine.json?key=${API_KEY}&q=${cityName}&days=1`
       );
       console.log(res);
       if (res.status === 200) {
@@ -143,7 +148,7 @@ function HomePage() {
   const fetchGetOneWeekApi = async () => {
     try {
       const res = await axios.get(
-        `${BASE_URL}/marine.json?q=seoul&days=7&key=${API_KEY}`
+        `${BASE_URL}/marine.json?q=${cityName}&days=7&key=${API_KEY}`
       );
       console.log(res);
 
@@ -157,7 +162,8 @@ function HomePage() {
               iconCode: item.day.condition.code,
               isDay: item.day.condition.icon.includes('day'),
             };
-          });
+          }
+        );
         setOneWeekWeatherSummary(newData);
       }
     } catch (error) {
@@ -169,7 +175,7 @@ function HomePage() {
     fetchApi();
     fetchTideApi();
     fetchGetOneWeekApi();
-  }, []);
+  }, [cityName]);
 
   return (
     <div className="page">
