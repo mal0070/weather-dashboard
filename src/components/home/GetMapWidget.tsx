@@ -1,11 +1,13 @@
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { Card } from '@/components';
-import { useState } from 'react';
+import { useAtom } from 'jotai';
+import { cityNameAtom } from '@/stores';
 import useKakaoLoader from '@/assets/hooks/useKakaoLoader';
 
 function GetMapWidget() {
   useKakaoLoader();
-  const [cityName, setCityName] = useState('seoul');
+  const [cityName, setCityName] = useAtom(cityNameAtom);
+
 
   const positions = [
     {
@@ -62,7 +64,7 @@ function GetMapWidget() {
             }}
             title={position.cityName} // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
             clickable={true} //마커를 클릭했을 때 지도에 클릭 이벤트 발생하지 않도록
-            onClick={(marker) => console.log(marker.getTitle())}
+            onClick={(marker) => setCityName(marker.getTitle())}
           />
         ))}
       </Map>
